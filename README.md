@@ -17,6 +17,12 @@ BenchmarkSliceIndexIter-16    	    1321	    877711 ns/op
 ```
 It did not help. Ideas?
 
+Another set for iteration is to test if re-slicing N elements is faster than just iterating N times and assigning by index. I thought that reslicing is slower, but it is way, way faster:
+```
+BenchmarkSliceReslicing-4   	1000000000	         0.989 ns/op
+BenchmarkSliceTake3-4       	234024609	         5.09 ns/op
+```
+
 ## AOS vs SOA vs SIMD
 Then I wanted to try different data layout in memory, the theory is, that `SOA` (structure of arrays) should be faster than `AOS` (array of structs), because the data are loaded from main memory to L3/L2/L1 cache in contiguous blocks.
 So having all the items together in one array should make it more friendly for the CPU cache.

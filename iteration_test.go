@@ -54,3 +54,33 @@ func BenchmarkSliceIndexIter(b *testing.B) {
 		}
 	}
 }
+
+var First3 []string
+
+// BenchmarkSliceReslicing serves for comparison, if its faster to re-slice slice
+// to take N items, or if its better to iterate with i++ N times.
+func BenchmarkSliceReslicing(b *testing.B) {
+	var slice = make([]string, lIter, lIter)
+	for i := 0; i < lIter; i++ {
+		slice[i] = strconv.Itoa(i)
+	}
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		First3 = slice[:3]
+	}
+}
+
+// BenchmarkSliceTake3 serves for comparison, if its faster to re-slice slice
+// to take N items, or if its better to iterate with i++ N times.
+func BenchmarkSliceTake3(b *testing.B) {
+	var slice = make([]string, lIter, lIter)
+	for i := 0; i < lIter; i++ {
+		slice[i] = strconv.Itoa(i)
+	}
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		for i:=0; i<3; i++ {
+			First3[i] = slice[i]
+		}
+	}
+}
